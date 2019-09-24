@@ -70,7 +70,7 @@ class PipelineController {
     pipelineDAO.all(refresh)
   }
 
-  @PreAuthorize("#restricted ? hasPermission(filterObject.name, 'APPLICATION', 'READ') : true")
+  @PreAuthorize("#restricted ? hasPermission(#application, 'APPLICATION', 'READ') : true")
   @RequestMapping(value = '{application:.+}', method = RequestMethod.GET)
   List<Pipeline> listByApplication(@PathVariable(value = 'application') String application,
                                    @RequestParam(required = false, value = 'restricted', defaultValue = 'true') boolean restricted,
@@ -93,7 +93,7 @@ class PipelineController {
   }
 
   @PreAuthorize("#restricted ? @fiatPermissionEvaluator.storeWholePermission() : true")
-  @PostFilter("#restricted ? hasPermission(filterObject.name, 'APPLICATION', 'READ') : true")
+  @PostFilter("#restricted ? hasPermission(filterObject.application, 'APPLICATION', 'READ') : true")
   @RequestMapping(value = '{id:.+}/history', method = RequestMethod.GET)
   Collection<Pipeline> getHistory(@PathVariable String id,
                                   @RequestParam(required = false, value = 'restricted', defaultValue = 'true') boolean restricted,
